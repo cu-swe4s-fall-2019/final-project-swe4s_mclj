@@ -1,0 +1,12 @@
+language: python
+
+before_install:
+    - pip install -U pip
+    - pip install -U pytest
+    - pip install -U pycodestyle
+    - pip install -U matplotlib
+    - pip install -U numpy
+
+script:
+    - python test_energy.py
+    - bash test_energy.sh
