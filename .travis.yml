@@ -10,3 +10,5 @@ before_install:
 script:
     - python test_energy.py
     - bash test_energy.sh
+    - python test_monte_carlo.py
+    - bash test_monte_carlo.sh
