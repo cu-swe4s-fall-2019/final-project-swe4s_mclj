@@ -29,7 +29,7 @@ Use `python monte_carlo.py` to conduct basic simulation. If you want to simulate
 8. `-e`: The energy function used to calculate the interactions between the particles in the fluid Default: "UnitLessLJ".
 9. `-p`: whether to plot the ouput the coordinates on updates
 
-## Profiling
+## Profiling and Improvement
 **Command**: `python3 -m cProfile -s tottime monte_carlo.py -N 20 -n 100000`
 ```
 65234309 function calls (61272000 primitive calls) in 81.529 seconds
@@ -37,17 +37,15 @@ Use `python monte_carlo.py` to conduct basic simulation. If you want to simulate
 Ordered by: internal time
 
 ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-3800190   22.174    0.000   44.404    0.000 energy.py:150(_minimum_image_distance)
 3800190   20.090    0.000   20.090    0.000 energy.py:92(calc_energy)
 ```
-To speed up our simulation process, we utilized `cProfile` module to analyze the bottleneck of our program. Based on the profiling result, we want to speed up `_minimum_image_distance` and `calc_energy`. First, let's talk about `calc_energy`. This function takes a floating point `r` (radius) as input, and uses this parameter to calculate the corresponding energy. Thus, in order to improve the performance of `calc_energy`, we added a hash table such as a cache to store calculated energy of known `r`. As the result, the cache makes `calc_energy` around *1.449799197* times faster than original method.
+To speed up our simulation process, we utilized `cProfile` module to analyze the bottleneck of our program. Based on the profiling result, we want to speed up `calc_energy`. First, let's talk about `calc_energy`. This function takes a floating point `r` (radius) as input, and uses this parameter to calculate the corresponding energy. Thus, in order to improve the performance of `calc_energy`, we added a hash table such as a cache to store calculated energy of known `r`. As the result, the cache makes `calc_energy` around *1.449799197* times faster than original method.
 ```
 69034583 function calls (65072274 primitive calls) in 74.539 seconds
 
 Ordered by: internal time
 
 ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-3800190   23.077    0.000   44.306    0.000 energy.py:150(_minimum_image_distance)
 3800190   13.387    0.000   13.855    0.000 energy.py:92(calc_energy)
 ```
 
