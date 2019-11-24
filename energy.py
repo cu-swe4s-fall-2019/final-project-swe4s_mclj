@@ -34,10 +34,15 @@ class LennardJones(EnergyModel):
             print('Invalid input parameters, use default instead')
             self.sigma = 1.0
             self.epsilon = 0.5
+        self.ener_cache = {}
 
     def calc_energy(self, r):
-        return (4 * self.epsilon * ((self.sigma / r) ** 12
-                                    - (self.sigma / r) ** 6))
+        if r in self.ener_cache.keys():
+            return self.ener_cache[r]
+        e = (4 * self.epsilon * ((self.sigma / r) ** 12 -
+                                 (self.sigma / r) ** 6))
+        self.ener_cache[r] = e
+        return e
 
     def cutoff_correction(self, cutoff=None, number_particles=None,
                           box_length=None):
@@ -59,9 +64,14 @@ class Buckingham(EnergyModel):
         self.rho = float(rho)
         self.a = float(a)
         self.c = float(c)
+        self.ener_cache = {}
 
     def calc_energy(self, r):
-        return self.a * np.exp(-r / self.rho) - self.c / r ** 6
+        if r in self.ener_cache.keys():
+            return self.ener_cache[r]
+        e = self.a * np.exp(-r / self.rho) - self.c / r ** 6
+        self.ener_cache[r] = e
+        return e
 
     def cutoff_correction(self, cutoff=None, number_particles=None,
                           box_length=None):
@@ -77,11 +87,14 @@ class UnitlessLennardJones(EnergyModel):
     """
 
     def __init__(self):
-        pass
+        self.ener_cache = {}
 
     def calc_energy(self, r: (int, float) = None):
-        return 4.0 * (np.power(1 / r, 12)
-                      - np.power(1 / r, 6))
+        if r in self.ener_cache.keys():
+            return self.ener_cache[r]
+        e = (4.0 * (np.power(1 / r, 12) - np.power(1 / r, 6)))
+        self.ener_cache[r] = e
+        return e
 
     def cutoff_correction(self, cutoff, number_particles, box_length):
         volume = np.power(box_length, 3)
