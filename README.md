@@ -3,19 +3,23 @@
 ## Continuous Integration Status
 ![](https://travis-ci.com/cu-swe4s-fall-2019/final-project-swe4s_mclj.svg?branch=master)
 
-## Installation
-To use this package, you need to have [Python3](https://www.python.org/download/releases/3.0/) in your environment. And the used packages are listed below.
+# Description
+This is a repository for the final project of the course Software Engineering for Scientists (CSCI 7000) at CU Boulder, which includes the following files:
+- `monte_carlo.py`: The main program of the package, which is able to perform a Monte Carlo simulation of Lennard Jones particles given specified parameters. 
+- `test_monte_carlo.py`: The unit tests of `monte_carlo.py`.
+- `test_monte_carlo.py`: The funtinoal tests of `monte_carlo.py`.
+- `energy.py`: A Python library which include several models and methods for energy calculations. 
+- `test_energy.py`: The unit tests of `energy.py`.
+- `test_energy.sh`: The functional tests of `energy.py`.
 
-### Used Packages
-* os
-* sys
-* abc
-* time
-* numpy
-* argparse
-* unittest
-* matplotlib
-* pycodestyle
+## Installation
+All the Python scripts are written in Python 3 and teh packages required to run the codes (including the unit tests and functional tests) inlcude: `os`, `sys`, `abc`, `time`, `numpy`, `argparse`, `unittest`, `matplotlib`, and `pycodestyle`. Currently the package can be installed by following the commands below:
+```
+git clone https://github.com/cu-swe4s-fall-2019/final-project-swe4s_mclj.git
+cd EXE_analysis
+pip install -e .
+```
+
 
 ## Usage
 Use `python monte_carlo.py` to conduct basic simulation. If you want to simulate different configuration, you can set the following arguments to `monte_carlo.py`:
@@ -51,3 +55,7 @@ ncalls  tottime  percall  cumtime  percall filename:lineno(function)
 
 ## Results
 To verify the correctness of our simulation, we compared our result with [the benchmark provided by NIST](https://mmlapps.nist.gov/srs/LJ_PURE/mc.htm).
+
+## Author
+- Wei-Tse Hsu ([wehs7661@colorado.edu]())
+- Chi-Ju Wu ()

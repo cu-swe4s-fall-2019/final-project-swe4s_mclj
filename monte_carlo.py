@@ -212,18 +212,6 @@ class MonteCarlo:
 
         return True
 
-
-def str2bool(v):
-    if isinstance(v, bool):
-        return v
-    if v.lower() in ('yes', 'true', 't', 'y', '1'):
-        return True
-    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
-        return False
-    else:
-        raise TypeError('Boolean value expected.')
-
-
 def initialize():
     """
     An argument parser as an initializing function.
@@ -293,7 +281,8 @@ def initialize():
                         '--plot',
                         required=False,
                         type=bool,
-                        default=False,
+                        default=True,
+                        action='store_false',
                         help='whether to plot the ouput the \
                             coordinates on updates')
 

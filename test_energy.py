@@ -4,6 +4,23 @@ import numpy as np
 
 
 class TestEnergyModels(unittest.TestCase):
+    def test_init(self):
+        model = energy.LennardJones('abc', 'def')
+        self.assertEqual(model.epsilon, 0.5)
+        self.assertEqual(model.sigma, 1.0)
+
+        model = energy.LennardJones(2.0, 3.0)
+        self.assertEqual(model.epsilon, 2.0)
+        self.assertEqual(model.sigma, 3.0)
+
+        model = energy.Buckingham('abc', 'def', 'ghi')
+        param_list = [model.rho, model.a, model.c]
+        self.assertEqual(param_list, [1.0, 1.0, 1.0])
+
+        model = energy.Buckingham(1.0, 2.0, 3.0)
+        param_list = [model.rho, model.a, model.c]
+        self.assertEqual(param_list, [1.0, 2.0, 3.0])
+
     def test_LennardJones(self):
         # create a model with default paramters
         model = energy.LennardJones()
