@@ -260,13 +260,3 @@ class Energy:
                     e_pair = self.energy_obj.calc_energy(rij)
                     e_total += e_pair
         return e_total
-
-
-def main():
-    energy_factory = potentialEnergyFactory()
-    lj_energy = energy_factory.build_energy_method('UnitlessLJ')
-    print(lj_energy.calc_energy(2.0))
-
-
-if __name__ == "__main__":
-    main()
