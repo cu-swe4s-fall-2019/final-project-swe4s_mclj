@@ -1,0 +1,3 @@
+[console_scripts]
+MCLJ = swe4s_MCLJ.monte_carlo:main
+
