@@ -155,6 +155,22 @@ class MonteCarlo:
                       fontsize=10, weight='bold')
             plt.savefig('structure_initial.png')
 
+        print('Adopted parameters')
+        print('==================')
+        print('Number of particles: ', self.N_particles)
+        print('The reduced density: ', self.args.reduced_rho)
+        print('Corresponding box length: ', self.box_length)
+        print('The reduced temperature: ', self.args.reduced_T)
+        print('The number of Monte Carlo steps: ', self.args.n_steps)
+        print('The initial maximum of the displacement:, ', self.args.max_d)
+        print('The output frequency of energy as the STDOUT: ', 
+              self.args.freq_ener)
+        print('The output frequency of the trajectory data: ', 
+              self.args.freq_traj)
+        print('Adopted energy model: %s\n' % self.args.energy)
+        print('Results')
+        print('=======')
+
         # set the initial total pair energy between particles in the system
         total_pair_energy = self.init_ener
         print(f'total pair initial: {total_pair_energy}')
