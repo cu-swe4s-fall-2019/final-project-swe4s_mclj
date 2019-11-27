@@ -17,7 +17,6 @@ Throughout the development, to apply and extend the knowledge learned from the c
 - All the python codes conform with PEP8 coding style.
 - All the Python modules have their own corresponding unit tests and functional test.
 - Continuous integration was performed using Travis CI.
-- `setup.py` and relevant files were added to distribute the package and enable its installation.
 - Benchmarking and profiling were performed to compare the computational costs of using different data strcutre, either a Numpy array or a dictionary, which is the implementation of hash tables in Python.
 
 #### The scieintific goals of the project
@@ -25,15 +24,13 @@ The major goal of this software package, is to perform a Monte Carlo simulation 
 
 
 ## Installation
-All the Python scripts are written in Python 3 and teh packages required to run the codes (including the unit tests and functional tests) inlcude: `os`, `sys`, `abc`, `time`, `numpy`, `argparse`, `unittest`, `matplotlib`, and `pycodestyle`. Currently the package can be installed by following the commands below:
-```
-git clone https://github.com/cu-swe4s-fall-2019/final-project-swe4s_mclj.git
-cd EXE_analysis
-pip install -e .
-```
+All the Python scripts are written in Python 3 and teh packages required to run the codes (including the unit tests and functional tests) inlcude: `os`, `sys`, `abc`, `time`, `numpy`, `argparse`, `unittest`, `matplotlib`, and `pycodestyle`. 
 
 ## Introduction to the project
-The goal is this project, is to develop a sfotware package which is able to perform a Monte Carlo simulation of Lennard-Jones fluids. 
+The goal is this project, is to develop a sfotware package which is able to perform a Monte Carlo simulation of Lennard-Jones fluids. Execute the following command to use this package:
+```
+git clone https://github.com/cu-swe4s-fall-2019/final-project-swe4s_mclj.git
+```
 
 
 ## Usage
@@ -69,7 +66,13 @@ ncalls  tottime  percall  cumtime  percall filename:lineno(function)
 ```
 
 ## Results
-To verify the correctness of our simulation, we compared our result with [the benchmark provided by NIST](https://mmlapps.nist.gov/srs/LJ_PURE/mc.htm).
+#### Total potentail energy of the system
+As a results, after 10 million Monte Carlo steps, the total potential energy of the system is XXXX. 
+#### Molecular visualization of the configuration
+Using `matplotlib`, we were able to plot 
+#### Animated trajectory
+In addition to the calculation of total potential energy of the system, we also used Visual Molecular Dynamics (VMD) to visualize the trajectory. 
+#### Benchmarking and Profiling
 
 ## Authors
 - Wei-Tse Hsu ([wehs7661@colorado.edu]())
