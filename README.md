@@ -24,29 +24,37 @@ The major goal of this software package, is to perform a Monte Carlo simulation 
 
 
 ## Installation
-All the Python scripts are written in Python 3 and teh packages required to run the codes (including the unit tests and functional tests) inlcude: `os`, `sys`, `abc`, `time`, `numpy`, `argparse`, `unittest`, `matplotlib`, and `pycodestyle`. 
-
-## Introduction to the project
-The goal is this project, is to develop a sfotware package which is able to perform a Monte Carlo simulation of Lennard-Jones fluids. Execute the following command to use this package:
+All the Python scripts are written in Python 3 and teh packages required to run the codes (including the unit tests and functional tests) inlcude: `os`, `sys`, `abc`, `time`, `numpy`, `argparse`, `unittest`, `matplotlib`, and `pycodestyle`. Execute the following command to use this package:
 ```
 git clone https://github.com/cu-swe4s-fall-2019/final-project-swe4s_mclj.git
 ```
 
 
 ## Usage
-Use `python monte_carlo.py` to conduct basic simulation. If you want to simulate different configuration, you can set the following arguments to `monte_carlo.py`:
+#### Execution of the main program: `monte_carlo.py`
+To perform a Monte Carlo simulation of Lennard-Jones particles in a canonical ensemble, run `python monte_carlo.py` with the following flags:
 - `-N`: The number of particles in the simulation box. Default: 500.
-- `-T`: The reduced temperature ranging from 0 to 1. Default: 0.9.
-- `-r`: The reduced density of the particles ranging from 0 to 1. Default: 0.9.
+- `-T`: The reduced temperature. Ranges from 0 to 1. Default: 0.9.
+- `-r`: The reduced density of the particles. Ranges from 0 to 1. Default: 0.9.
 - `-n`: The number of Monte Carlo steps. Default: 1M.
-- `-fe`: The output frequency of energy as the stdout. Default: 1000.
+- `-fe`: The output frequency of energy as the STDOUT. Default: 1000.
 - `-ft`: The output frequency of the trajectory data. Default: 100000.
 - `-m`: The initial maximum of the displacement. Default: 0.1.
-- `-e`: The energy function used to calculate the interactions between the particles in the fluid Default: "UnitLessLJ".
-- `-p`: whether to plot the ouput the coordinates on updates
+- `-e`: The energy function used to calculate the interactions between the particles in the fluid Default: "UnitlessLJ".
+- `-p`: whether to plot the initial and the final configuration of the particles.
 
-## Profiling and Improvement
-**Command**: `python3 -m cProfile -s tottime monte_carlo.py -N 20 -n 100000`
+#### Unit tests and funtional tests
+- To perform unit tests of `monte_carlo.py`, run `python test_monte_carlo.py`.
+- To perform funtional tests of `monte_carlo.py`, run `bash test_monte_carlo.sh`.
+- To perform unit tests of `energy.py`, run `python test_energy.py`.
+- To perform funtional tests of `energy.py`, run `bash test_energy.sh`.
+
+## Enhancement of the code efficiency
+To improve the efficiency of our code, we used `cProfile` pacakge to perform profiling on `monte_carlo.py` with the following command:
+```
+python3 -m cProfile -s tottime monte_carlo.py -N 20 -n 100000
+```
+which gave rise to the following results:
 ```
 65234309 function calls (61272000 primitive calls) in 81.529 seconds
 
@@ -55,7 +63,7 @@ Ordered by: internal time
 ncalls  tottime  percall  cumtime  percall filename:lineno(function)
 3800190   20.090    0.000   20.090    0.000 energy.py:92(calc_energy)
 ```
-To speed up our simulation process, we utilized `cProfile` module to analyze the bottleneck of our program. Based on the profiling result, we want to speed up `calc_energy`. First, let's talk about `calc_energy`. This function takes a floating point `r` (radius) as input, and uses this parameter to calculate the corresponding energy. Thus, in order to improve the performance of `calc_energy`, we added a hash table such as a cache to store calculated energy of known `r`. As the result, the cache makes `calc_energy` around *1.449799197* times faster than original method.
+As shown above, the function `calc_energy` accounted for about 26.4% of the computer time, which was therefore what we wanted to improve on. The reason behind this was that the computational cost was quadratically proportional to the number of particles and that the distances and neighbors of every particle updated after each Monte Carlo step. To speed up the execution of this function, we tried to use a dictionary, which was an implementation of hash tables in Python, as the cache to store the values of energy corresponding to different interparticle distances ($r$). After implementing the Python dictionary, we obtained the following results of another profiling:
 ```
 69034583 function calls (65072274 primitive calls) in 74.539 seconds
 
@@ -64,6 +72,7 @@ Ordered by: internal time
 ncalls  tottime  percall  cumtime  percall filename:lineno(function)
 3800190   13.387    0.000   13.855    0.000 energy.py:92(calc_energy)
 ```
+As shown above, the computer time of executing `calc_energy` decreased to 13.855, which means that the new data structure (hash table) was 1.449799197 faster than the original data structure (2D array).
 
 ## Results
 #### Total potentail energy of the system
