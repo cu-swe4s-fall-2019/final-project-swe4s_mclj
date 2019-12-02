@@ -46,7 +46,7 @@ class TestMonteCarlo(unittest.TestCase):
         self.assertEqual(self.parser.reduced_rho, 0.9)
         self.assertEqual(self.parser.n_steps, 1000000)
         self.assertEqual(self.parser.freq_ener, 1000)
-        self.assertEqual(self.parser.freq_traj, 100000)
+        self.assertEqual(self.parser.freq_traj, 1000)
         self.assertEqual(self.parser.max_d, 0.1)
         self.assertEqual(self.parser.energy, 'UnitlessLJ')
 

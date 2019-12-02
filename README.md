@@ -91,20 +91,20 @@ As a results, after 1 million Monte Carlo steps, the total potential energy of t
     <img src="results/energy_plot.png" width="500"/> <br/>
 </p>
 
-#### Molecular visualization of the configuration
+#### Molecular visualization of the system configurations
 Using `matplotlib`, we were able to plot the initial and the final configuration of the system in a 3D space. As shown below, while it seems hard to tell the difference between the two since all the particles were randomy placed, we can still observe that the in the figure on the right, the particles were distributed more uniformly than the other. This just shows that the final configuration of the system on the right still represents a configuration that is much more stable than the one shown on the left.
 
 <img src="results/structure_initial.png" width="400"/> <img src="results/structure_final.png" width="400"/>
 
-To better observe the tendency of the particles being distributed more uniformly, we also tried to place the particles randomly in a space smaller than the whole box. Specifically, we placed the particles in a smaller cubic box whose box length is half of the original one. Below are the initial and the final conigurations of the system. As could be easily expected, to reach to a more stable thermodynamic state, namely, a state with a lower total potential energy of the system, the particles diffused toward the sides of the box and were distributed more nearly uniformly. 
+To better observe the tendency of the particles being distributed more uniformly, we also tried to place the particles randomly in a space smaller than the whole box. Specifically, we placed the particles in a smaller cubic box whose box length is half of the original one. For demonstration purposes, we changed the maximum displacement to 0.2 to make the diffusion more obvious. (Also, the output frequency of the trajectory data and the number of Monte Carlo steps were changed to 5 steps and 10000 steps, respectively.) Below are the initial and the final conigurations of the system. As could be easily expected, to reach to a more stable thermodynamic state, namely, a state with a lower total potential energy of the system, the particles diffused toward the sides of the box and were distributed more uniformly. 
 
 <img src="results/structure_initial_smallbox.png" width="400"/> <img src="results/structure_final_smallbox.png" width="400"/>
 
 
 
 #### Animated trajectory
-In addition to the calculation of total potential energy of the system, we also used Visual Molecular Dynamics (VMD) to visualize the trajectory of the particles. As shown below, the left animation illustrates the simulation starting with particles randomly placed in the full space of the box, while the right one shows the simulation starting with particles randomly placed in a smaller space of the box. As a result, 
-<img src="results/traj.gif" width="400"/> <img src="results/traj_small_box.gif" width="400"/>
+In addition to the calculation of total potential energy of the system, we also used Visual Molecular Dynamics (VMD) to visualize the trajectory of the particles. As shown below, the left animation illustrates the simulation starting with particles randomly placed in the full space of the box, while the right one shows the simulation starting with particles randomly placed in a smaller space of the box as decribed above (only the first 2500 steps were plotted). As expected, both simulations drove the system to a lower energy. For the simulation starting with a small space, the particles diffuse to the sides of the box and it took more steps for the energy of the system to converge. 
+<img src="results/traj.gif" width="400"/> <img src="results/traj_smallbox.gif" width="400"/>
 
 
 ## Authors
