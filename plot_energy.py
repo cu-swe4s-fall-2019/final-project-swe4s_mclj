@@ -19,7 +19,8 @@ def initialize():
     parser.add_argument('-o',
                         '--output',
                         type=str,
-                        required=True,
+                        required=False,
+                        default='energy_plot.png',
                         help='The file name of the output figure.')
 
     args_parse = parser.parse_args()

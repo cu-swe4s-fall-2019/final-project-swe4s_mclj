@@ -163,9 +163,9 @@ class MonteCarlo:
         print('The reduced temperature: ', self.args.reduced_T)
         print('The number of Monte Carlo steps: ', self.args.n_steps)
         print('The initial maximum of the displacement:, ', self.args.max_d)
-        print('The output frequency of energy as the STDOUT: ', 
+        print('The output frequency of energy as the STDOUT: ',
               self.args.freq_ener)
-        print('The output frequency of the trajectory data: ', 
+        print('The output frequency of the trajectory data: ',
               self.args.freq_traj)
         print('Adopted energy model: %s\n' % self.args.energy)
         print('Results')
@@ -333,6 +333,11 @@ def initialize():
                         action='store_true',
                         help='whether to plot the initial and final \
                             configurations. Specify "-p" to plot.')
+    parser.add_argument('-o',
+                        '--traj_file',
+                        required=False,
+                        default='traj_output.xyz',
+                        help='The file name of the trajectory data file.')
 
     args_parse = parser.parse_args()
 
@@ -353,7 +358,6 @@ if __name__ == "__main__":
     new_system = SystemSetup(N_particles=args.N_particles,
                              reduced_rho=args.reduced_rho)
     energy = energy.Energy()
-    args.traj_file = 'traj_output.xyz'
     sim = MonteCarlo(system=new_system, energy=energy, args=args)
     sim.MC_simulation()
     sys.exit(0)
