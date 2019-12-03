@@ -31,7 +31,7 @@ class LennardJones(EnergyModel):
             self.sigma = float(sigma)
             self.epsilon = float(epsilon)
         except ValueError:
-            print('Invalid input parameters, use default instead')
+            print('Invalid input parameters. Use default instead.')
             self.sigma = 1.0
             self.epsilon = 0.5
         self.ener_cache = {}
@@ -61,9 +61,13 @@ class Buckingham(EnergyModel):
 
     def __init__(self, rho: (int, float) = 1.0, a: (int, float) = 1.0,
                  c: (int, float) = 1.0):
-        self.rho = float(rho)
-        self.a = float(a)
-        self.c = float(c)
+        try:
+            self.rho = float(rho)
+            self.a = float(a)
+            self.c = float(c)
+        except ValueError:
+            print('Invalid input parameters. Use default instead.')
+            self.rho, self.a, self.c = 1.0, 1.0, 1.0
         self.ener_cache = {}
 
     def calc_energy(self, r):
@@ -256,13 +260,3 @@ class Energy:
                     e_pair = self.energy_obj.calc_energy(rij)
                     e_total += e_pair
         return e_total
-
-
-def main():
-    energy_factory = potentialEnergyFactory()
-    lj_energy = energy_factory.build_energy_method('UnitlessLJ')
-    print(lj_energy.calc_energy(2.0))
-
-
-if __name__ == "__main__":
-    main()

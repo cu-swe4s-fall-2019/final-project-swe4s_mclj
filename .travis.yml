@@ -12,3 +12,4 @@ script:
     - bash test_energy.sh
     - python test_monte_carlo.py
     - bash test_monte_carlo.sh
+    - bash test_plot_energy.sh

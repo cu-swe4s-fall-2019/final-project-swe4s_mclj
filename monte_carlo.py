@@ -46,12 +46,13 @@ class MonteCarlo:
         args : obj
             An arguement parser object returned by the function initialize
         """
+
         # get parameters from the class SystemSetup
         self.N_particles = system.N_particles
         self.coordinates = system.coordinates
         self.box_length = system.box_length
 
-        # get parameters from the class Energy (need to check with CJ)
+        # get parameters from the class Energy
         self.init_ener = energy.calc_init_ener(
             self.coordinates, self.box_length)
         self.tail = energy.calc_tail(self.N_particles, self.box_length)
@@ -78,6 +79,7 @@ class MonteCarlo:
             Whether to accept (accept = True) or reject (accept = False) the
             moves
         """
+
         if delta_e < 0:
             accept = True
         else:
@@ -119,6 +121,7 @@ class MonteCarlo:
         n_accept : int
             The updated number of accepted trials
         """
+
         acc_rate = float(n_accept) / float(n_trials)
         if acc_rate < 0.38:
             max_d *= 0.8
@@ -133,6 +136,41 @@ class MonteCarlo:
         """
         This is the primary function that perform a Monte Carlo simulation
         """
+
+        if args.plot:
+            plt.figure()
+            ax = plt.axes(projection='3d')
+            ax.set_xlim([-self.box_length/2, self.box_length/2])
+            ax.set_ylim([-self.box_length/2, self.box_length/2])
+            ax.set_zlim([-self.box_length/2, self.box_length/2])
+            ax.set_xlabel('x coordinate')
+            ax.set_ylabel('y coordinate')
+            ax.set_zlabel('z coordinate')
+            for i in range(self.args.N_particles):
+                ax.plot3D([self.coordinates[i, 0]],
+                          [self.coordinates[i, 1]],
+                          [self.coordinates[i, 2]], 'o')
+            plt.minorticks_on
+            plt.title('Initial configuration of the Lennard-Jones particles',
+                      fontsize=10, weight='bold')
+            plt.savefig('structure_initial.png')
+
+        print('Adopted parameters')
+        print('==================')
+        print('Number of particles: ', self.N_particles)
+        print('The reduced density: ', self.args.reduced_rho)
+        print('Corresponding box length: ', self.box_length)
+        print('The reduced temperature: ', self.args.reduced_T)
+        print('The number of Monte Carlo steps: ', self.args.n_steps)
+        print('The initial maximum of the displacement:, ', self.args.max_d)
+        print('The output frequency of energy as the STDOUT: ',
+              self.args.freq_ener)
+        print('The output frequency of the trajectory data: ',
+              self.args.freq_traj)
+        print('Adopted energy model: %s\n' % self.args.energy)
+        print('Results')
+        print('=======')
+
         # set the initial total pair energy between particles in the system
         total_pair_energy = self.init_ener
         print(f'total pair initial: {total_pair_energy}')
@@ -184,26 +222,36 @@ class MonteCarlo:
             if np.mod(i_step + 1, self.args.freq_ener) == 0:
                 print(i_step + 1, energy_array[i_step])
                 # plot
-                if args.plot:
-                    ax = plt.axes(projection='3d')
-                    ax.set_xlim([-self.box_length/2, self.box_length/2])
-                    ax.set_ylim([-self.box_length/2, self.box_length/2])
-                    ax.set_zlim([-self.box_length/2, self.box_length/2])
-                    for i in range(self.args.N_particles):
-                        ax.plot3D([self.coordinates[i, 0]],
-                                  [self.coordinates[i, 1]],
-                                  [self.coordinates[i, 2]], 'o')
-                    plt.pause(0.05)
-            # output traj
+
+            if args.plot and (i_step + 1 == self.args.n_steps):
+                plt.figure()
+                ax = plt.axes(projection='3d')
+                ax.set_xlim([-self.box_length/2, self.box_length/2])
+                ax.set_ylim([-self.box_length/2, self.box_length/2])
+                ax.set_zlim([-self.box_length/2, self.box_length/2])
+                ax.set_xlabel('x coordinate')
+                ax.set_ylabel('y coordinate')
+                ax.set_zlabel('z coordinate')
+                for i in range(self.args.N_particles):
+                    ax.plot3D([self.coordinates[i, 0]],
+                              [self.coordinates[i, 1]],
+                              [self.coordinates[i, 2]], 'o')
+                plt.minorticks_on
+                plt.title('Final configuration of the Lennard-Jones particles',
+                          fontsize=10, weight='bold')
+                plt.savefig('structure_final.png')
+
+            # Generation of the trajectory file
             with open(self.args.traj_file, "a+") as fn:
                 # if prefer to output trajectories, open the output file
                 if np.mod(i_step + 1, self.args.freq_traj) == 0:
+                    fn.write(str(self.N_particles)+'\n')
                     fn.write(f'Step: {i_step + 1} \n')
                     for i_atom in range(len(self.coordinates)):
-                        fn.write(
-                            f'{self.coordinates[i_atom, 0]} \
-                              {self.coordinates[i_atom, 1]} \
-                              {self.coordinates[i_atom, 2]} \n')
+                        fn.write('Ar  ' + str(self.coordinates[i_atom, 0]) +
+                                 '  ' + str(self.coordinates[i_atom, 1]) +
+                                 '  ' + str(self.coordinates[i_atom, 2]) +
+                                 '\n')
 
             self.args.max_d, n_accept, n_trials = self.adjust_moves(
                 self.args.max_d, n_accept, n_trials)
@@ -211,17 +259,6 @@ class MonteCarlo:
         self.energy_array = energy_array
 
         return True
-
-
-def str2bool(v):
-    if isinstance(v, bool):
-        return v
-    if v.lower() in ('yes', 'true', 't', 'y', '1'):
-        return True
-    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
-        return False
-    else:
-        raise TypeError('Boolean value expected.')
 
 
 def initialize():
@@ -270,9 +307,9 @@ def initialize():
                         '--freq_traj',
                         required=False,
                         type=int,
-                        default=100000,
+                        default=1000,
                         help='The output frequency of the trajectory data. \
-                            Default: 100000.')
+                            Default: 1000.')
     parser.add_argument('-m',
                         '--max_d',
                         required=False,
@@ -292,10 +329,15 @@ def initialize():
     parser.add_argument('-p',
                         '--plot',
                         required=False,
-                        type=bool,
                         default=False,
-                        help='whether to plot the ouput the \
-                            coordinates on updates')
+                        action='store_true',
+                        help='whether to plot the initial and final \
+                            configurations. Specify "-p" to plot.')
+    parser.add_argument('-o',
+                        '--traj_file',
+                        required=False,
+                        default='traj_output.xyz',
+                        help='The file name of the trajectory data file.')
 
     args_parse = parser.parse_args()
 
@@ -303,11 +345,19 @@ def initialize():
 
 
 if __name__ == "__main__":
+    rc('font', **{
+        'family': 'sans-serif',
+        'sans-serif': ['DejaVu Sans'],
+        'size': 10
+    })
+    # Set the font used for MathJax - more on this later
+    rc('mathtext', **{'default': 'regular'})
+    plt.rc('font', family='serif')
+
     args = initialize()
     new_system = SystemSetup(N_particles=args.N_particles,
                              reduced_rho=args.reduced_rho)
     energy = energy.Energy()
-    args.traj_file = 'traj_output'
     sim = MonteCarlo(system=new_system, energy=energy, args=args)
     sim.MC_simulation()
     sys.exit(0)

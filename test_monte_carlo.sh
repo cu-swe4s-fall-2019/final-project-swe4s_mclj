@@ -9,7 +9,7 @@ run test_style pycodestyle monte_carlo.py
 assert_no_stdout
 
 echo "...few particles..."
-run test_few_particles python3 monte_carlo.py --N_particles 10 --n_steps 10000
+run test_few_particles python3 monte_carlo.py --N_particles 10 --n_steps 10000 --traj_file test.xyz
 assert_stdout
 assert_exit_code 0
-rm traj_output
+rm test.xyz
